@@ -191,7 +191,7 @@ class doe:
       s = [f'Directory name with design xls: {self.path}']
       s += [f'Solutions: {self.comps}']
       for i in range(len(self.comps)):
-        s+=[f'{self.comps[i]}: {self.start_range[i]:.{2}} +/- {self.end_range[i]:.{2}}']
+        s+=[f'{self.comps[i]}: {self.start_range[i]:.{2}} to {self.end_range[i]:.{2}}']
       s+= [f'Total Experiments: {len(self.df)}']
       s = '\n'.join(s)
       s += f'\nExperimental Design \n{self.df.to_string()}'
@@ -244,7 +244,7 @@ class doe:
       s += f'<br>Directory name with design xls: {self.path}'
       s += f'<br>Solutions: {self.comps}'
       for i in range(len(self.comps)):
-        s += f'<br></pre>{self.comps[i]}: {self.start_range[i]:.{2}} +/- {self.end_range[i]:.{2}}</pre>'
+        s += f'<br></pre>{self.comps[i]}: {self.start_range[i]:.{2}} to {self.end_range[i]:.{2}}</pre>'
       s += f'<br>Total Experiments: {len(self.df)}<br>'
       s += f'<br> Experimental Design <br>'
       s += self.df.to_html()
