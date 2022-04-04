@@ -21,7 +21,7 @@ from sklearn.pipeline import Pipeline
 from scipy.optimize import minimize 
 import statsmodels.api as sm
 from statsmodels.formula.api import ols
-import pyDOE2 as *
+from pyDOE2 import *
 
 
 class doe:
