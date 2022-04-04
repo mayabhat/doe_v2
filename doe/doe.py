@@ -21,6 +21,7 @@ from sklearn.pipeline import Pipeline
 from scipy.optimize import minimize 
 import statsmodels.api as sm
 from statsmodels.formula.api import ols
+import pyDOE2 as *
 
 
 class doe:
@@ -194,10 +195,13 @@ class doe:
         s+=[f'{self.comps[i]}: {self.start_range[i]:.{2}} to {self.end_range[i]:.{2}}']
       s+= [f'Total Experiments: {len(self.df)}']
       s = '\n'.join(s)
-      s += f'\nExperimental Design \n{self.df.to_string()}'
+
+      if not self.result_path:
+        s += f'\nExperimental Design \n{self.df.to_string()}'
 
 
       if self.result_path:
+        s += f'\nExperimental Design \n{self.dfmod.to_string()}'
         #Mapping of labels to x values 
         sm = []
         sm +=['Mapping of the x labeled features is as follows:']
@@ -246,10 +250,14 @@ class doe:
       for i in range(len(self.comps)):
         s += f'<br></pre>{self.comps[i]}: {self.start_range[i]:.{2}} to {self.end_range[i]:.{2}}</pre>'
       s += f'<br>Total Experiments: {len(self.df)}<br>'
-      s += f'<br> Experimental Design <br>'
-      s += self.df.to_html()
+
+      if not self.result_path:
+        s += f'<br> Experimental Design <br>'
+        s += self.df.to_html()
       
       if self.result_path:
+        s += f'<br> Data <br>'
+        s += self.dfmod.to_html()
         df_feat = pd.DataFrame({})
         df_feat['coefficients'] = self.model.params
         df_feat['pvalues'] = self.model.pvalues
