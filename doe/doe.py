@@ -30,8 +30,8 @@ class doe:
       os.mkdir(self.path)
     self.comps = variable_names
     self.design = None
-    self.start_range = np.zeros(self.comps)
-    self.end_range = np.zeros(self.comps)
+    self.start_range = np.zeros(len(self.comps))
+    self.end_range = np.zeros(len(self.comps))
     self.df = pd.DataFrame({})
     self.targets = target_names
     self.result_path = None
