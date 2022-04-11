@@ -26,6 +26,10 @@ from pyDOE2 import *
 
 class doe:
   def __init__(self, path, variable_names, target_names):
+    """ PATH is a string that is a directory that will contain experiment files.
+        VARIABLE_NAMES is a list of strings with independent variables.
+        TARGET_NAMES is a list of strings with target variable names.
+    """
     self.path = path
     if not os.path.exists(self.path):
       os.mkdir(self.path)
@@ -33,8 +37,8 @@ class doe:
     self.design = None
     self.start_range = np.zeros(len(self.comps))
     self.end_range = np.zeros(len(self.comps))
-    self.df = pd.DataFrame({})
     self.targets = target_names
+    self.df = pd.DataFrame({columns = self.comps + self.targets})
     self.result_path = None
 
   def _transform_des (self, des, range=None):
@@ -51,12 +55,13 @@ class doe:
     return des
 
   def make_design (self, design, range=None):
-      '''Creates a design dataframe from a design. This requires a mapping to turn -1, 0, 1 into concentrations
-      DESIGN: bbdesign(), ccdesign(), fullfact() from pydoe2. See documentation to figure out how to make a design
-      https://pythonhosted.org/pyDOE/ 
-      RANGE: 2D array with each row being a component. The first column is center point, second column is distance from center. The form is
-    [[center point, deviation], [center point, deviation]] 
-      
+      '''Creates a design dataframe from a design. This requires a mapping to 
+         turn -1, 0, 1 into concentrations.
+         DESIGN: doe.bbdesign(), doe.ccdesign(), doe.fullfact() from pydoe2. 
+           See documentation to figure out how to make a design https://pythonhosted.org/pyDOE/.
+         RANGE: 2D array with each row being an independent variable. The first column is 
+           center point, second column is distance from center. The form is
+           [[center point, deviation], [center point, deviation]] 
       '''
       #create design
       self.design_unscaled = design
@@ -74,6 +79,10 @@ class doe:
       return self.df
 
   def fit(self, file_name, feature_order=2):
+    """ Creates a linear model with experimental results. 
+        FILENAME is a string. It is the path to the results xlsx file.
+        FEATURE_ORDER is an int. This dictates the max polynomial power to generate. 
+    """
     self.result_path = os.path.join(self.path, file_name)
     self.dfmod = pd.read_excel(self.result_path, index_col = None)
 
@@ -85,9 +94,8 @@ class doe:
 
     #assign names to features 
     self.x_map =  [f'x{str(x)}' for x in range(len(self.X_trans[0]))]
-    df_x = self.dfmod[self.dfmod.columns.values[:-1]]
-    p = PolynomialFeatures(2).fit(df_x)
-    self.feat_names = p.get_feature_names_out(df_x.columns)
+    p = PolynomialFeatures(2).fit(dffeat)
+    self.feat_names = p.get_feature_names_out(dffeat.columns)
     self.map_feat = dict(zip(self.feat_names, self.x_map))
 
     #poly = PolynomialFeatures(2) 
@@ -106,10 +114,9 @@ class doe:
     '''
     pred = self.model.predict(self.X_trans)
     plt.scatter(self.y, pred)
-    plt.plot(np.linspace(0,self.df[self.df.columns.values[-1]].max()+2), np.linspace(0,self.df[self.df.columns.values[-1]].max()+2))
     plt.xlabel('True Value')
     plt.ylabel('Predicted Value')
-    plt.title(f'{self.df.columns.values[-1]} prediction and true values')
+    plt.title(f'{self.target} prediction and true values')
     return plt.show()
 
   def _objective(self, X, sign):
@@ -132,7 +139,7 @@ class doe:
     bounds = []
     max_bound = []
     mid = []
-    for i in self.df.columns.values[:-1]:
+    for i in self.comps:
       min = self.df[i].min()
       max = self.df[i].max()
       bounds.append((min, max))
