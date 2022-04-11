@@ -116,7 +116,7 @@ class doe:
     plt.scatter(self.y, pred)
     plt.xlabel('True Value')
     plt.ylabel('Predicted Value')
-    plt.title(f'{self.target} prediction and true values')
+    plt.title(f'{self.targets} prediction and true values')
     return plt.show()
 
   def _objective(self, X, sign):
