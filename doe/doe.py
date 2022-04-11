@@ -38,7 +38,7 @@ class doe:
     self.start_range = np.zeros(len(self.comps))
     self.end_range = np.zeros(len(self.comps))
     self.targets = target_names
-    self.df = pd.DataFrame({columns = self.comps + self.targets})
+    self.df = pd.DataFrame(columns = self.comps + self.targets)
     self.result_path = None
 
   def _transform_des (self, des, range=None):
