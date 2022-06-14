@@ -13,7 +13,7 @@ setup(name='doe',
       packages=['doe'],
       setup_requires=[],
       data_files=[],
-      install_requires=['pyDOE2', 'sklearn', 'matplotlib', 'numpy', 'pycse', 'pandas', 'xlrd', 'openpyxl'],
+      install_requires=['autograd', 'pyDOE2', 'sklearn', 'matplotlib', 'numpy', 'pycse', 'pandas', 'xlrd', 'openpyxl'],
       long_description='''A module to perform Design of Experiments design, model building, and statistical analysis
       ''')
 
