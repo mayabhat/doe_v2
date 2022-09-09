@@ -73,9 +73,10 @@ class doe:
       
       self.df = pd.DataFrame(columns = self.comps, data = self.design)
       self.df[self.targets] = ""
-      writer = ExcelWriter(self.path+'/design.xlsx')
-      self.df.to_excel(writer, index = False)
-      writer.save()
+      #writer = ExcelWriter(self.path+'/design.xlsx')
+      #self.df.to_excel(writer, index = False)
+      #writer.save()
+      self.df.to_csv(self.path+'/design.csv')
       return self.df
 
   def fit(self, file_name, feature_order=2):
